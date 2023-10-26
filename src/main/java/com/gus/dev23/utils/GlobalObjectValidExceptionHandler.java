@@ -46,8 +46,7 @@ public class GlobalObjectValidExceptionHandler {
         logger.error("***", ex);
         Map<String, String> errorDetails = new HashMap<>();
         errorDetails.put("error", "Internal Server Error");
-        errorDetails.put("message", ex.getLocalizedMessage()); // 可根据需要修改错误消息
-
+        errorDetails.put("message", ex.getLocalizedMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
