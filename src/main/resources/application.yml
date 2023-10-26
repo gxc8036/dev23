@@ -1,2 +1,26 @@
 server:
   port: 8088
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://192.168.10.211:3306/dev01?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: hello123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: SpringBootHikariCP
+      auto-commit: true
+      connection-timeout: 30000
+      minimum-idle: 20
+      maximum-pool-size: 100
+      validation-timeout: 5000
+      leak-detection-threshold: 60000
+      # 设置连接的最大生命周期，应小于 MySQL 的 wait_timeout
+      max-lifetime: 28000000 # 以毫秒为单位
+      # 设置空闲连接的最大存活时间，一般小于服务器的 wait_timeout
+      idle-timeout: 28740000 # 以毫秒为单位
+      # 用于测试连接是否仍然有效的查询
+      connection-test-query: "SELECT 1"
+      # 如果使用的是较新版本的 HikariCP，还可以设置 keepalive-time
+      keepalive-time: 1800000 # 以毫秒为单位，例如这里设置的是 30 分钟

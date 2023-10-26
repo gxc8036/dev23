@@ -44,9 +44,10 @@ public class GlobalObjectValidExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGlobalException(Exception ex, WebRequest request) {
         logger.error("***", ex);
-        Map<String, String> errorDetails = new HashMap<>();
+        Map<String, Object> errorDetails = new HashMap<>();
         errorDetails.put("error", "Internal Server Error");
-        errorDetails.put("message", ex.getLocalizedMessage());
+//      errorDetails.put("message", ex.getLocalizedMessage());
+        errorDetails.put("message", ex);
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
