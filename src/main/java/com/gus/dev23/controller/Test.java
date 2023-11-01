@@ -20,10 +20,7 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 public class Test {
 
-
     private final TestService ts;
-
-
     private static final Logger logger = LoggerFactory.getLogger(Test.class);
 
     @RequestMapping("/hello")
@@ -37,7 +34,6 @@ public class Test {
         // 在此处继续您的业务逻辑，例如保存emp，下面只是一个示例响应
         return ResponseEntity.ok("Emp created with name: " + emp.toString());
     }
-
 
     @RequestMapping("/ts01")
     public List<Map<String, Object>> ts01() {
