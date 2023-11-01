@@ -3,37 +3,38 @@ package com.gus.dev23.init;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
 @Component
 public class JdbcStartupRunner implements CommandLineRunner {
 
+    public final HikariDataSource hikariDataSource;
+    public static Map<String, Object> hikariCPStatusMap = new HashMap<>();
+
     private final JdbcTemplate jdbcTemplate;
-
-    private final HikariDataSource hikariDataSource;
-
 
     @Override
     public void run(String... args) throws Exception {
         System.out.println(jdbcTemplate.queryForList(Sql.EMP_QUERY));
+        initHCPPool();
+
     }
 
-    @Scheduled(fixedRate = 1000)
-    private void printHikariCPStatus() {
+    private void initHCPPool() {
         if (hikariDataSource.getHikariPoolMXBean() != null) {
-            System.out.println("\n--------------------------------");
-            System.out.println("HikariCP Connection Pool Status");
-            System.out.println("Total Connections: " + hikariDataSource.getHikariPoolMXBean().getTotalConnections());
-            System.out.println("Idle Connections: " + hikariDataSource.getHikariPoolMXBean().getIdleConnections());
-            System.out.println("Active Connections: " + hikariDataSource.getHikariPoolMXBean().getActiveConnections());
-            System.out.println("Threads Awaiting Connection: " + hikariDataSource.getHikariPoolMXBean().getThreadsAwaitingConnection());
-            System.out.println("--------------------------------\n");
+            hikariCPStatusMap.put("Total Connections", hikariDataSource.getHikariPoolMXBean().getTotalConnections());
+            hikariCPStatusMap.put("Idle Connections", hikariDataSource.getHikariPoolMXBean().getIdleConnections());
+            hikariCPStatusMap.put("Active Connections", hikariDataSource.getHikariPoolMXBean().getActiveConnections());
+            hikariCPStatusMap.put("Threads Awaiting Connection", hikariDataSource.getHikariPoolMXBean().getThreadsAwaitingConnection());
         } else {
-            System.out.println("HikariPoolMXBean is not yet available.");
+            hikariCPStatusMap.put("HikariCP Connection Pool Status", "HikariPoolMXBean is not yet available.");
         }
     }
 }
+

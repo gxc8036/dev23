@@ -1,10 +1,10 @@
 package com.gus.dev23.controller;
 
+import com.gus.dev23.init.JdbcStartupRunner;
 import com.gus.dev23.service.TestService;
 import com.gus.dev23.vo.Emp;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,10 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 public class Test {
 
+
     private final TestService ts;
+
+
     private static final Logger logger = LoggerFactory.getLogger(Test.class);
 
     @RequestMapping("/hello")
@@ -35,8 +38,14 @@ public class Test {
         return ResponseEntity.ok("Emp created with name: " + emp.toString());
     }
 
+
     @RequestMapping("/ts01")
     public List<Map<String, Object>> ts01() {
         return ts.TestService01();
+    }
+
+    @RequestMapping("/hikariCPStatus")
+    public Map<String, Object> getHikariCPStatus() {
+        return JdbcStartupRunner.hikariCPStatusMap;
     }
 }
